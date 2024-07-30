@@ -31,7 +31,6 @@ public class FilterAndFormatHighlyRatedProductsSteps {
     @Given("the application can retrieve the products without error")
     public void the_application_can_retrieve_the_products_without_error() {
         response = RestAssured.get();
-        Assert.fail("Failed to retrieve products from the API");
         Assert.assertEquals(StatusCode.OK, response.getStatusCode());
     }
 
@@ -67,9 +66,15 @@ public class FilterAndFormatHighlyRatedProductsSteps {
         }
     }
 
-    @Then("it should write the filtered products to {string}")
-    public void it_should_write_the_filtered_products_to(String fileName) {
-        JsonUtils.writeToJsonFile(filteredProducts, fileName);
+//    @Then("it should write the filtered products to {string}")
+//    public void it_should_write_the_filtered_products_to(String fileName) {
+//        JsonUtils.writeToJsonFile(filteredProducts, fileName);
+//    }
+
+    @Then("it should write the filtered products to Json-file")
+    public void it_should_write_the_filtered_products_to_json_file() {
+        // Write code here that turns the phrase above into concrete actions
+        JsonUtils.writeToJsonFile(filteredProducts, RESULTS_FILE);
     }
 
     @Then("the results.json file should contain the filtered and formatted products")
