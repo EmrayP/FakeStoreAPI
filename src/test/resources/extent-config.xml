@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <reporter type="html">
+        <enable>true</enable>
+        <theme>standard</theme>
+        <encoding>UTF-8</encoding>
+        <protocol>https</protocol>
+        <timestampFormat>MMM dd, yyyy HH:mm:ss</timestampFormat>
+        <title>Cucumber Test Report</title>
+        <reportName>Cucumber BDD Report</reportName>
+        <appendExisting>false</appendExisting>
+        <terminateAfterType>true</terminateAfterType>
+        <offlineMode>false</offlineMode>
+        <configurationSource>resource</configurationSource>
+        <resource>
+            <externalResource>false</externalResource>
+            <classLoader>true</classLoader>
+        </resource>
+    </reporter>
+</configuration>
