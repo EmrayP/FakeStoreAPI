@@ -36,21 +36,21 @@ jobs:
       - name: Build with Maven
         run: mvn clean verify -Dtestng.dtd.http=true
         env:
-          GITHUB_TOKEN: ${{ secrets.Token }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: Run Cucumber Tests
         run: mvn test -Dcucumber.options="--plugin json:target/cucumber.json"
         env:
-          GITHUB_TOKEN: ${{ secrets.Token }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: Generate Cucumber Report
         uses: deblockt/cucumber-report-annotations-action@v1.8
         with:
-          access-token: ${{ secrets.Token }}
+          access-token: ${{ secrets.PAT }}
           path: "**/target/cucumber.json"
 
       - name: Deploy report page to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.Token }}
+          github_token: ${{ secrets.PAT }}
           publish_dir: ./target/cucumber-html-reports
