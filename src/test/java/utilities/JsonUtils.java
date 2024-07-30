@@ -27,23 +27,6 @@ public class JsonUtils {
         }
 
 
-//        public static void verifyJsonFileContent(String fileName, double minRating, int minReviews) throws IOException {
-//            File file = new File(fileName);
-//            Assertions.assertTrue(file.exists(), "The file should be created.");
-//            Assertions.assertTrue(file.length() > 0, "The file should not be empty.");
-//
-//            List<Product> writtenProducts = objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, Product.class));
-//            for (Product product : writtenProducts) {
-//                Assertions.assertTrue(product.getRating().rate >= minRating, "Product rating should be at least " + minRating);
-//                Assertions.assertTrue(product.getRating().count >= minReviews, "Product review count should be at least " + minReviews);
-//                Assertions.assertTrue(product.getPrice() >= 0, "Price should be non-negative.");
-//            }
-//
-//            // Clean up the test file
-//            file.delete();
-//        }
-
-
     public static void verifyJsonFileContent(String fileName, double minRating, int minReviews) throws IOException {
         File file = new File(fileName);
         Assertions.assertTrue(file.exists(), "The file should be created.");

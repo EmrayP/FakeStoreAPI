@@ -43,11 +43,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
-      - name: Generate Cucumber Report
-        uses: deblockt/cucumber-report-annotations-action@v1.8
-        with:
-          access-token: ${{ secrets.PAT }}
-          path: "**/target/cucumber.json"
+#      - name: Generate Cucumber Report
+#        uses: deblockt/cucumber-report-annotations-action@v1.8
+#        with:
+#          access-token: ${{ secrets.PAT }}
+#          path: "**/target/cucumber.json"
 
       - name: Deploy report page to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
