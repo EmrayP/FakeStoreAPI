@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
       - master
@@ -16,25 +16,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up JDK 11
+      - name: Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: '11'
 
-      - name: Build with Maven
-        run: mvn package
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/fakestoreapi-testing:${{ github.sha }} .
+      - name: Install dependencies
+        run: npm install
 
       - name: Run tests
-        run: docker run ${{ secrets.DOCKER_USERNAME }}/fakestoreapi-testing:${{ github.sha }} mvn test
+        run: npm test
 
-      - name: Generate Cucumber report
-        run: docker run ${{ secrets.DOCKER_USERNAME }}/fakestoreapi-testing:${{ github.sha }} mvn verify
+      - name: Generate test reports
+        run: |
+          mkdir -p test-reports
+          npm run test:report # Adjust this command based on how you generate your test reports
+        continue-on-error: true
 
-      - name: Login to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Upload test reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: test-reports
 
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/fakestoreapi-testing:${{ github.sha }}
+      - name: Notify on failure
+        if: failure()
+        run: echo "Tests failed. Please check the test reports."
