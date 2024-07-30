@@ -12,9 +12,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -30,9 +31,9 @@
                         </goals>
                         <configuration>
                             <projectName>FakeStoreAPI</projectName>
-                            <outputDirectory>${project.build.directory}/cucumber-report-html</outputDirectory>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
                             <jsonFiles>
-                                <param>${project.build.directory}/cucumber.json</param>
+                                <param>**/cucumber*.json</param>
                             </jsonFiles>
                             <buildNumber>42</buildNumber>
                         </configuration>
@@ -104,11 +105,6 @@
             <version>3.3.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/net.masterthought/maven-cucumber-reporting -->
-        <dependency>
-            <groupId>net.masterthought</groupId>
-            <artifactId>maven-cucumber-reporting</artifactId>
-            <version>5.8.1</version>
-        </dependency>
         <!-- extend-reporting-maven-cucumber-reporting -->
         <dependency>
             <groupId>tech.grasshopper</groupId>
@@ -120,10 +116,6 @@
             <artifactId>extentreports</artifactId>
             <version>5.0.9</version>
         </dependency>
-
-
-
-
 
     </dependencies>
 

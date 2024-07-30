@@ -13,7 +13,7 @@
         <offlineMode>false</offlineMode>
         <configurationSource>resource</configurationSource>
         <resource>
-            <externalResource>false</externalResource>
+            <externalResource>true</externalResource>
             <classLoader>true</classLoader>
         </resource>
     </reporter>

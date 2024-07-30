@@ -21,10 +21,11 @@ public class FilterAndFormatHighlyRatedProductsSteps {
     private static final String RESULTS_FILE = "results.json";
 
 
-
-    @Given("the application is configured to connect to {string}")
-    public void the_application_is_configured_to_connect_to() {
+    @Given("the application is configured to connect to base url")
+    public void the_application_is_configured_to_connect_to_base_url() {
+        // Write code here that turns the phrase above into concrete actions
         RestAssured.baseURI = ConfigurationsReader.getProperty("base.url");
+
     }
 
     @Given("the application can retrieve the products without error")

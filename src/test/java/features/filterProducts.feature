@@ -1,7 +1,7 @@
 Feature: Filter and Format Highly Rated Products
 
   Background:
-    Given the application is configured to connect to "https://fakestoreapi.com/products"
+    Given the application is configured to connect to base url
     And the application can retrieve the products without error
 
   Scenario: Filter and Format Highly Rated Products
