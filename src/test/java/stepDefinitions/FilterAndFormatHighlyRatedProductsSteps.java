@@ -1,4 +1,6 @@
 package stepDefinitions;
+import constants.FrameworkConstants;
+import constants.StatusCode;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -18,20 +20,19 @@ import java.util.Locale;
 public class FilterAndFormatHighlyRatedProductsSteps {
     private Response response;
     private List<JsonUtils.Product> filteredProducts;
-    private static final String RESULTS_FILE = "results.json";
-
+    private static final String RESULTS_FILE = FrameworkConstants.RESULT_JSON_FILE;
 
     @Given("the application is configured to connect to base url")
     public void the_application_is_configured_to_connect_to_base_url() {
         // Write code here that turns the phrase above into concrete actions
-        RestAssured.baseURI = ConfigurationsReader.getProperty("base.url");
-
+        RestAssured.baseURI = ConfigurationsReader.getProperty(FrameworkConstants.BASE_URL);
     }
 
     @Given("the application can retrieve the products without error")
     public void the_application_can_retrieve_the_products_without_error() {
         response = RestAssured.get();
-        Assert.assertEquals(200, response.getStatusCode());
+        Assert.fail("Failed to retrieve products from the API");
+        Assert.assertEquals(StatusCode.OK, response.getStatusCode());
     }
 
     @Given("the application requests all products from the API")
@@ -65,8 +66,6 @@ public class FilterAndFormatHighlyRatedProductsSteps {
             product.setPrice(Double.parseDouble(currencyFormatter.format(product.getPrice()).replaceAll("[^\\d.]", "")));
         }
     }
-
-
 
     @Then("it should write the filtered products to {string}")
     public void it_should_write_the_filtered_products_to(String fileName) {

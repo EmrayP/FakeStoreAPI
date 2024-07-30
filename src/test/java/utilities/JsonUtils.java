@@ -1,10 +1,7 @@
 package utilities;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.messages.types.Product;
 import org.junit.jupiter.api.Assertions;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
