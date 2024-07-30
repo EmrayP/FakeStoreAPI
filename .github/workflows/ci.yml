@@ -7,6 +7,12 @@ on:
     branches: [ master ]
   workflow_dispatch: {} # This will allow you to run the workflow manually
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  statuses: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
