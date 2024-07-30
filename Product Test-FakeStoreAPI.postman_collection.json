@@ -1,0 +1,85 @@
+{
+	"info": {
+		"_postman_id": "411ff682-b998-4add-9a6a-5fb88f411ace",
+		"name": "Product Test-FakeStoreAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8545688"
+	},
+	"item": [
+		{
+			"name": "ProductTest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Filter and Format Highly Rated Products\", function () {",
+							"    // Parse the response body",
+							"    var response = pm.response.json();",
+							"",
+							"    // Filter products with rating >= 3.0 and reviews >= 100",
+							"    var filteredProducts = response.filter(product => product.rating.rate >= 3.0 && product.rating.count >= 100);",
+							"",
+							"    // Manually format the price into USD currency format",
+							"    filteredProducts.forEach(product => {",
+							"        product.price = \"$\" + Number(product.price).toFixed(2).replace(/\\d(?=(\\d{3})+\\.)/g, '$&,');",
+							"    });",
+							"",
+							"    // Check if the filtered and formatted products meet the criteria",
+							"    filteredProducts.forEach(product => {",
+							"        pm.expect(product.rating.rate).to.be.at.least(3.0);",
+							"        pm.expect(product.rating.count).to.be.at.least(100);",
+							"        pm.expect(product.price).to.match(/^\\$\\d+(\\,\\d{3})*(\\.\\d{2})?$/);",
+							"    });",
+							"",
+							"    // Write the filtered products to `results.json`",
+							"    pm.environment.set(\"filteredProducts\", JSON.stringify(filteredProducts));",
+							"});",
+							"",
+							"// Use Postman’s pm API to write the results to a file",
+							"pm.sendRequest({",
+							"    url: \"http://localhost:3000/save\", // Replace with your server URL",
+							"    method: \"POST\",",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    },",
+							"    body: {",
+							"        mode: \"raw\",",
+							"        raw: JSON.stringify({",
+							"            fileName: \"results.json\",",
+							"            data: pm.environment.get(\"filteredProducts\")",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.log(err);",
+							"    } else {",
+							"        console.log(\"Results saved successfully!\");",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fakestoreapi.com/products",
+					"protocol": "https",
+					"host": [
+						"fakestoreapi",
+						"com"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
