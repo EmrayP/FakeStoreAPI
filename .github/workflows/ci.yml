@@ -47,4 +47,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.Token }}
-          publish_dir: ./target
+          publish_dir: ./target/cucumber-html-reports
