@@ -36,7 +36,7 @@ jobs:
       - name: Generate test reports
         run: |
           mkdir -p test-reports
-          npm run test:report # Adjust this command based on how you generate your test reports
+          npm run test:report
         continue-on-error: true
 
       - name: Upload test reports
@@ -44,6 +44,19 @@ jobs:
         with:
           name: test-reports
           path: test-reports
+
+      - name: Debugging step
+        if: failure()
+        run: |
+          echo "Debugging Information"
+          echo "List of files:"
+          ls -al
+          echo "Node.js version:"
+          node -v
+          echo "NPM version:"
+          npm -v
+          echo "Java version:"
+          java -version
 
       - name: Notify on failure
         if: failure()
