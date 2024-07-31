@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        # Checks out your repository under $GITHUB_WORKSPACE, so your job can access it
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -39,12 +39,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: Run Cucumber Tests
-        run: mvn test -Dcucumber.options="--plugin json:target/cucumber.json"
+        run: mvn test -Dcucumber.options="--plugin json:target/cucumber.json --plugin html:target/cucumber-html-report"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
+
+      - name: Upload Cucumber HTML Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-html-report
+          path: target/cucumber-html-report
 
       - name: Deploy report page to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.PAT }}
-          publish_dir: ./target/cucumber-html-report/cucumber-html-report.html
+          publish_dir: ./target/cucumber-html-report
