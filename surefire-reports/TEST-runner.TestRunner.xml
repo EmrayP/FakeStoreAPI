@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="runner.TestRunner" time="2.743" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="runner.TestRunner" time="1.984" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="cucumber.options" value="--plugin json:target/cucumber.json --plugin html:target/cucumber-html-report"/>
@@ -61,5 +61,5 @@
     <property name="java.vendor.version" value="Temurin-11.0.23+9"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="Filter and Format Highly Rated Products" name="Filter and Format Highly Rated Products" time="2.743"/>
+  <testcase classname="Filter and Format Highly Rated Products" name="Filter and Format Highly Rated Products" time="1.984"/>
 </testsuite>
