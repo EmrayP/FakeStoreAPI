@@ -4,6 +4,14 @@ import org.junit.runner.RunWith;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
+/**
+ * This class is used to run the Cucumber tests for the project.
+ * It specifies the location of the feature files and step definitions,
+ * and configures the plugins for generating reports and rerun files.
+ *
+ * Author: Emray Pala
+ * Created Date: 2024-07-30
+ */
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = "src/test/java/features",

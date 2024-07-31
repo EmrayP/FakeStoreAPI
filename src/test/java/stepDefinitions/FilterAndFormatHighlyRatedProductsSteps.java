@@ -1,6 +1,8 @@
 package stepDefinitions;
 import constants.FrameworkConstants;
+import constants.Messages;
 import constants.StatusCode;
+import exceptions.JsonVerificationException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -16,7 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static constants.Messages.*;
 
+/**
+ * This class contains the step definitions for the Cucumber feature file `filterProducts.feature`.
+ * It includes methods to configure the application, retrieve products, filter and format them,
+ * and write the results to a JSON file.
+ *
+ * Author: Emray Pala
+ * Created Date: 2023-10-05
+ */
 public class FilterAndFormatHighlyRatedProductsSteps {
     private Response response;
     private List<JsonUtils.Product> filteredProducts;
@@ -24,14 +35,17 @@ public class FilterAndFormatHighlyRatedProductsSteps {
 
     @Given("the application is configured to connect to base url")
     public void the_application_is_configured_to_connect_to_base_url() {
-        // Write code here that turns the phrase above into concrete actions
         RestAssured.baseURI = ConfigurationsReader.getProperty(FrameworkConstants.BASE_URL);
     }
 
     @Given("the application can retrieve the products without error")
     public void the_application_can_retrieve_the_products_without_error() {
-        response = RestAssured.get();
-        Assert.assertEquals(StatusCode.OK, response.getStatusCode());
+         response = RestAssured.get();
+        if (response.getStatusCode() == StatusCode.SERVER_DOESNT_REPLY) {
+            throw new RuntimeException(Messages.SERVER_DOESNT_REPLY);
+        } else {
+            Assert.assertEquals(StatusCode.OK, response.getStatusCode());
+        }
     }
 
     @Given("the application requests all products from the API")
@@ -44,7 +58,7 @@ public class FilterAndFormatHighlyRatedProductsSteps {
         JsonUtils.Product[] products = response.getBody().as(JsonUtils.Product[].class);
         filteredProducts = new ArrayList<>();
         for (JsonUtils.Product product : products) {
-            if (product.getRating().rate >= 3.0 && product.getRating().count >= 100) {
+            if (product.getRating().rate >= FrameworkConstants.RATE_THRESHOLD && product.getRating().count >= FrameworkConstants.COUNT_THRESHOLD) {
                 filteredProducts.add(product);
             }
         }
@@ -53,8 +67,8 @@ public class FilterAndFormatHighlyRatedProductsSteps {
     @Then("it should filter out products with a rating less than {double} or fewer than {int} reviews")
     public void it_should_filter_out_products_with_a_rating_less_than_or_fewer_than_reviews(Double rating, Integer reviews) {
         for (JsonUtils.Product product : filteredProducts) {
-            Assertions.assertTrue(product.getRating().rate >= rating, "Product rating should be at least " + rating);
-            Assertions.assertTrue(product.getRating().count >= reviews, "Product review count should be at least " + reviews);
+            Assertions.assertTrue(product.getRating().rate >= rating, PRODUCT_RATING_MESSAGE + rating);
+            Assertions.assertTrue(product.getRating().count >= reviews, PRODUCT_REVIEW_COUNT_MESSAGE + reviews);
         }
     }
 
@@ -66,19 +80,16 @@ public class FilterAndFormatHighlyRatedProductsSteps {
         }
     }
 
-//    @Then("it should write the filtered products to {string}")
-//    public void it_should_write_the_filtered_products_to(String fileName) {
-//        JsonUtils.writeToJsonFile(filteredProducts, fileName);
-//    }
-
     @Then("it should write the filtered products to Json-file")
     public void it_should_write_the_filtered_products_to_json_file() {
-        // Write code here that turns the phrase above into concrete actions
         JsonUtils.writeToJsonFile(filteredProducts, RESULTS_FILE);
     }
 
     @Then("the results.json file should contain the filtered and formatted products")
-    public void the_results_json_file_should_contain_the_filtered_and_formatted_products() throws IOException {
-        JsonUtils.verifyJsonFileContent(RESULTS_FILE, 3.0, 100);
-    }
+    public void the_results_json_file_should_contain_the_filtered_and_formatted_products()  {
+        try {
+            JsonUtils.verifyJsonFileContent(RESULTS_FILE, FrameworkConstants.RATE_THRESHOLD, FrameworkConstants.COUNT_THRESHOLD);
+        } catch (IOException e) {
+            throw new JsonVerificationException(RUN_TIME_EXCEPTION,e);
+        }    }
 }

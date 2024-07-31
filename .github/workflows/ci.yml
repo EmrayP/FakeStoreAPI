@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Java CI with Maven-Cucumber
 
 on:
   push:
@@ -42,12 +42,6 @@ jobs:
         run: mvn test -Dcucumber.options="--plugin json:target/cucumber.json"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
-
-#      - name: Generate Cucumber Report
-#        uses: deblockt/cucumber-report-annotations-action@v1.8
-#        with:
-#          access-token: ${{ secrets.PAT }}
-#          path: "**/target/cucumber.json"
 
       - name: Deploy report page to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
