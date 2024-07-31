@@ -12,18 +12,3 @@
 # Temporary files
 /tmp/
 /*.tmp
-
-# Docker files
-/docker-compose.yml
-/Dockerfile
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-
-# GitHub Actions
-/.github/
-
-# Maven specific files
-.mvn/
-.settings/

@@ -1,0 +1,54 @@
+name: Java CI with Maven-Cucumber
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch: {} # This will allow you to run the workflow manually
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  statuses: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        # Checks out your repository under $GITHUB_WORKSPACE, so your job can access it
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: 11
+          distribution: 'temurin'  # Add the distribution input
+
+      - name: Build with Maven
+        run: mvn clean verify -Dtestng.dtd.http=true
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+
+      - name: Run Cucumber Tests
+        run: mvn test -Dcucumber.options="--plugin json:target/cucumber.json --plugin html:target/cucumber-html-report"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+
+
+      - name: Deploy report page to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.PAT }}
+          publish_dir: ./target/Cucumber-Reports
+          keep_files: true
+          user_name: EmrayP
+          user_email: emraypala@gmail.com
