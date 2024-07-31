@@ -18,7 +18,7 @@ import io.cucumber.junit.CucumberOptions;
         glue = {"stepDefinitions"},
         plugin = {
                 "pretty",
-                "html:target/Cucumber-Reports/cucumber-html-report.html",
+                "html:target/Cucumber-Reports/index.html",
                 "json:target/Cucumber-Reports/cucumber.json",
                 "rerun:target/rerun.txt"} // Plugin for generating the rerun file
 )
