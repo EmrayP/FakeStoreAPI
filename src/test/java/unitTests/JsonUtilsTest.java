@@ -1,10 +1,12 @@
 package unitTests;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import utilities.JsonUtils;
+import utilities.constants.FrameworkConstants;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JsonUtilsTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private List<JsonUtils.Product> products;
+    private List<pages.Product> products;
     private File tempFile;
 
     @TempDir
@@ -33,14 +35,14 @@ public class JsonUtilsTest {
     @BeforeEach
     public void setUp() {
         products = new ArrayList<>();
-        JsonUtils.Product product1 = new JsonUtils.Product();
+        pages.Product product1 = new pages.Product();
         product1.setPrice(19.99);
         JsonUtils.Rating rating1 = new JsonUtils.Rating();
         rating1.rate = 4.5;
         rating1.count = 150;
         product1.setRating(rating1);
 
-        JsonUtils.Product product2 = new JsonUtils.Product();
+        pages.Product product2 = new pages.Product();
         product2.setPrice(29.99);
         JsonUtils.Rating rating2 = new JsonUtils.Rating();
         rating2.rate = 3.5;
@@ -61,12 +63,13 @@ public class JsonUtilsTest {
 
     @Test
     public void testWriteToJsonFile() {
-        JsonUtils.writeToJsonFile(products, tempFile.getPath());
-        assertTrue(tempFile.exists(), "File should be created");
-        assertTrue(tempFile.length() > 0, "File should not be empty");
+        JsonUtils.writeToJsonFile(products, FrameworkConstants.RESULT_JSON_FILE);
+        File outputFile = new File(tempDir.toFile(), FrameworkConstants.RESULT_JSON_FILE);
+        assertTrue(outputFile.exists(), "File should be created");
+        assertTrue(outputFile.length() > 0, "File should not be empty");
 
         try {
-            List<JsonUtils.Product> writtenProducts = objectMapper.readValue(tempFile, objectMapper.getTypeFactory().constructCollectionType(List.class, JsonUtils.Product.class));
+            List<pages.Product> writtenProducts = objectMapper.readValue(outputFile, objectMapper.getTypeFactory().constructCollectionType(List.class, pages.Product.class));
             assertEquals(products.size(), writtenProducts.size(), "Number of products should match");
             for (int i = 0; i < products.size(); i++) {
                 assertEquals(products.get(i).getPrice(), writtenProducts.get(i).getPrice(), "Product prices should match");
@@ -80,8 +83,9 @@ public class JsonUtilsTest {
 
     @Test
     public void testVerifyJsonFileContent() throws IOException {
-        JsonUtils.writeToJsonFile(products, tempFile.getPath());
-        JsonUtils.verifyJsonFileContent(tempFile.getPath(), 3.0, 100);
+        JsonUtils.writeToJsonFile(products, FrameworkConstants.RESULT_JSON_FILE);
+        File outputFile = new File(FrameworkConstants.OUT_PUT_FOLDER, FrameworkConstants.RESULT_JSON_FILE);
+        JsonUtils.verifyJsonFileContent(outputFile.getPath(), 3.0, 100);
     }
 
     @Test

@@ -1,34 +1,41 @@
 package utilities;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Assertions;
+import pages.Product;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import static constants.Messages.*;
+import static utilities.constants.Messages.RESULT_JSON_FILE_CREATED_MESSAGE;
+import static utilities.constants.Messages.RESULT_JSON_FILE_EMPTY_MESSAGE;
+import static utilities.constants.Messages.PRODUCT_RATING_MESSAGE;
+import static utilities.constants.Messages.PRODUCT_REVIEW_COUNT_MESSAGE;
+import static utilities.constants.Messages.PRICE;
 
-public class JsonUtils {
-        private static final ObjectMapper objectMapper = new ObjectMapper();
+public class
 
-        // Method to write object to JSON file
-        public static void writeToJsonFile(Object object, String fileName) {
-            try (FileWriter file = new FileWriter(fileName)) {
-                String jsonString = objectMapper.writeValueAsString(object);
-                file.write(jsonString);
-            } catch (IOException e) {
-                handleError(e);
-            }
+
+JsonUtils {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    // Method to write object to JSON file
+    public static void writeToJsonFile(Object object, String fileName) {
+        try (FileWriter file = new FileWriter(fileName)) {
+            String jsonString = objectMapper.writeValueAsString(object);
+            file.write(jsonString);
+        } catch (IOException e) {
+            handleError(e);
         }
+    }
 
-        // Error handling method
-        public static void handleError(Exception e) {
-            System.err.println("An error occurred: " + e.getMessage());
-            e.printStackTrace();
-        }
+    // Error handling method
+    public static void handleError(Exception e) {
+        System.err.println("An error occurred: " + e.getMessage());
+        e.printStackTrace();
+    }
 
 
     public static void verifyJsonFileContent(String fileName, double minRating, int minReviews) throws IOException {
@@ -53,17 +60,11 @@ public class JsonUtils {
      * Represents a product with a price and rating.
      * Uses Lombok to generate getters, setters, and a no-argument constructor.
      */
-    @Data
-    @NoArgsConstructor
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class Product {
-        private double price;
-        private Rating rating;
-    }
+
 
     public static class Rating {
         public double rate;
         public int count;
     }
-    }
+}
 

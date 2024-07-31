@@ -1,8 +1,5 @@
 package stepDefinitions;
-import constants.FrameworkConstants;
-import constants.Messages;
-import constants.StatusCode;
-import exceptions.JsonVerificationException;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,25 +9,32 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import utilities.ConfigurationsReader;
 import utilities.JsonUtils;
+
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static constants.Messages.*;
+import utilities.constants.FrameworkConstants;
+import utilities.constants.StatusCode;
+import utilities.constants.Messages;
+import utilities.exceptions.JsonVerificationException;
+
+import static utilities.constants.Messages.*;
+
 
 /**
  * This class contains the step definitions for the Cucumber feature file `filterProducts.feature`.
  * It includes methods to configure the application, retrieve products, filter and format them,
  * and write the results to a JSON file.
- *
+ * <p>
  * Author: Emray Pala
- * Created Date: 2023-10-05
+ * Created Date: 2024-07-30
  */
-public class FilterAndFormatHighlyRatedProductsSteps {
+public class FilterProductsSteps {
     private Response response;
-    private List<JsonUtils.Product> filteredProducts;
+    private List<pages.Product> filteredProducts;
     private static final String RESULTS_FILE = FrameworkConstants.RESULT_JSON_FILE;
 
     @Given("the application is configured to connect to base url")
@@ -40,7 +44,7 @@ public class FilterAndFormatHighlyRatedProductsSteps {
 
     @Given("the application can retrieve the products without error")
     public void the_application_can_retrieve_the_products_without_error() {
-         response = RestAssured.get();
+        response = RestAssured.get();
         if (response.getStatusCode() == StatusCode.SERVER_DOESNT_REPLY) {
             throw new RuntimeException(Messages.SERVER_DOESNT_REPLY);
         } else {
@@ -55,9 +59,9 @@ public class FilterAndFormatHighlyRatedProductsSteps {
 
     @When("the application receives the list of products")
     public void the_application_receives_the_list_of_products() {
-        JsonUtils.Product[] products = response.getBody().as(JsonUtils.Product[].class);
+        pages.Product[] products = response.getBody().as(pages.Product[].class);
         filteredProducts = new ArrayList<>();
-        for (JsonUtils.Product product : products) {
+        for (pages.Product product : products) {
             if (product.getRating().rate >= FrameworkConstants.RATE_THRESHOLD && product.getRating().count >= FrameworkConstants.COUNT_THRESHOLD) {
                 filteredProducts.add(product);
             }
@@ -66,7 +70,7 @@ public class FilterAndFormatHighlyRatedProductsSteps {
 
     @Then("it should filter out products with a rating less than {double} or fewer than {int} reviews")
     public void it_should_filter_out_products_with_a_rating_less_than_or_fewer_than_reviews(Double rating, Integer reviews) {
-        for (JsonUtils.Product product : filteredProducts) {
+        for (pages.Product product : filteredProducts) {
             Assertions.assertTrue(product.getRating().rate >= rating, PRODUCT_RATING_MESSAGE + rating);
             Assertions.assertTrue(product.getRating().count >= reviews, PRODUCT_REVIEW_COUNT_MESSAGE + reviews);
         }
@@ -75,7 +79,7 @@ public class FilterAndFormatHighlyRatedProductsSteps {
     @Then("it should format the price of each filtered product into USD currency format")
     public void it_should_format_the_price_of_each_filtered_product_into_USD_currency_format() {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
-        for (JsonUtils.Product product : filteredProducts) {
+        for (pages.Product product : filteredProducts) {
             product.setPrice(Double.parseDouble(currencyFormatter.format(product.getPrice()).replaceAll("[^\\d.]", "")));
         }
     }
@@ -86,10 +90,11 @@ public class FilterAndFormatHighlyRatedProductsSteps {
     }
 
     @Then("the results.json file should contain the filtered and formatted products")
-    public void the_results_json_file_should_contain_the_filtered_and_formatted_products()  {
+    public void the_results_json_file_should_contain_the_filtered_and_formatted_products() {
         try {
             JsonUtils.verifyJsonFileContent(RESULTS_FILE, FrameworkConstants.RATE_THRESHOLD, FrameworkConstants.COUNT_THRESHOLD);
         } catch (IOException e) {
-            throw new JsonVerificationException(RUN_TIME_EXCEPTION,e);
-        }    }
+            throw new JsonVerificationException(RUN_TIME_EXCEPTION, e);
+        }
+    }
 }
