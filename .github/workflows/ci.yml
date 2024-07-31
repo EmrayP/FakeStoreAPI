@@ -43,9 +43,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
-      - name: Prepare Cucumber HTML Report
-        run: cp target/cucumber-html-report.html target/cucumber-html-report.html
-
       - name: Upload Cucumber HTML Report
         uses: actions/upload-artifact@v4
         with:
@@ -56,5 +53,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.PAT }}
-          publish_dir: ./target/cucumber-html-report
-          keep_history: true
+          publish_dir: ./public
