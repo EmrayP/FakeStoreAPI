@@ -21,6 +21,7 @@ import utilities.constants.StatusCode;
 import utilities.constants.Messages;
 import utilities.exceptions.JsonVerificationException;
 
+import static utilities.constants.FrameworkConstants.OUT_PUT_FOLDER;
 import static utilities.constants.Messages.*;
 
 
@@ -86,16 +87,30 @@ public class FilterProductsSteps {
 
     @Then("it should write the filtered products to Json-file")
     public void it_should_write_the_filtered_products_to_json_file() {
-        JsonUtils.writeToJsonFile(filteredProducts, FrameworkConstants.RESULT_JSON_FILE);
+        JsonUtils.writeToJsonFile(filteredProducts, OUT_PUT_FOLDER ,FrameworkConstants.RESULT_JSON_FILE);
 
     }
 
-    @Then("the results.json file should contain the filtered and formatted products")
-    public void the_results_json_file_should_contain_the_filtered_and_formatted_products() {
+    /**
+     * This method verifies that the output folder contains the JSON file with the filtered and formatted products.
+     * It ensures that the file exists, is not empty, and contains products that meet the specified rating and review count criteria.
+     * This method is added to make sure the returned file contains the required information.
+     *
+     * @throws JsonVerificationException If an I/O error occurs during file reading or if the file content does not meet the criteria.
+     *
+     * The method performs the following steps:
+     * 1. Calls the `verifyJsonFileContent` method to check if the file exists and is not empty.
+     * 2. Verifies that the products in the file meet the specified rating and review count criteria.
+     * 3. Throws a `JsonVerificationException` if an I/O error occurs or if the file content does not meet the criteria.
+     */
+
+    @Then("the output.folder should contain the file filtered and formatted products")
+    public void the_output_folder_should_contain_the_file_filtered_and_formatted_products() {
         try {
-            JsonUtils.verifyJsonFileContent(FrameworkConstants.RESULT_JSON_FILE, FrameworkConstants.RATE_THRESHOLD, FrameworkConstants.COUNT_THRESHOLD);
+            JsonUtils.verifyJsonFileContent(OUT_PUT_FOLDER,FrameworkConstants.RESULT_JSON_FILE, FrameworkConstants.RATE_THRESHOLD, FrameworkConstants.COUNT_THRESHOLD);
         } catch (IOException e) {
             throw new JsonVerificationException(RUN_TIME_EXCEPTION, e);
         }
     }
+
 }
