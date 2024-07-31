@@ -27,3 +27,5 @@ Thumbs.db
 # Maven specific files
 .mvn/
 .settings/
+
+# Reporting folder

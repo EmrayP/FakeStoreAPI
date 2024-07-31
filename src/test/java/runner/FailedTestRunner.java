@@ -14,8 +14,8 @@ import io.cucumber.junit.CucumberOptions;
         glue = {"stepDefinitions"},
         plugin = {
                 "pretty",
-                "html:target/cucumber-html-report",
-                "json:target/cucumber.json",
+                "html:target/Cucumber-Reports/cucumber-html-report.html",
+                "json:target/Cucumber-Reports/cucumber.json",
                 "tech.grasshopper.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
         }
 )

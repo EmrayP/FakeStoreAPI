@@ -33,7 +33,7 @@
                             <projectName>FakeStoreAPI</projectName>
                             <outputDirectory>${project.build.directory}</outputDirectory>
                             <jsonFiles>
-                                <param>/cucumber*.json</param>
+                                <param>**/cucumber*.json</param>
                             </jsonFiles>
                             <buildNumber>42</buildNumber>
                         </configuration>
