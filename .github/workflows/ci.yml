@@ -48,7 +48,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.PAT }}
-          publish_dir: ./target
+          publish_dir: ./target/Cucumber-Reports
           keep_files: true
           user_name: EmrayP
           user_email: emraypala@gmail.com
