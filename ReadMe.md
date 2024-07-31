@@ -38,12 +38,14 @@ This project is a Java-based framework that uses Maven for build automation, Res
     ```
 
 ### Running Unit Tests Manually in IntelliJ IDEA
+
 1. Open IntelliJ IDEA.
 2. Navigate to the `src/test/java` directory in the Project view.
 3. Right-click on the `unitTests.JsonUtilsTest` class.
 4. Select `Run 'JsonUtilsTest'` to execute the tests.
 
 ### Running Tests in the Terminal
+
 1. Open a terminal window.
 2. Navigate to the root directory of your project.
 3. Run the following command to execute all tests using Maven:
@@ -52,6 +54,7 @@ This project is a Java-based framework that uses Maven for build automation, Res
     ```
 
 ### Running Cucumber Feature Tests
+
 1. Open a terminal window.
 2. Navigate to the root directory of your project.
 3. Run the following command to execute all Cucumber feature tests using Maven:
@@ -65,10 +68,9 @@ GitHub Actions is configured to run tests based on pull requests (PRs). Whenever
 
 1. Navigate to the **Actions** tab in the GitHub repository.
 2. Search for the workflow named `CI: Java CI with Maven-Cucumber` to see the test results.
-   ![GitHub Actions](images/github-actions.png)
+   
 3. If you want to manually trigger the CI, click the **Run workflow** button on the right-hand side.
-   ![Run Workflow](images/run-workflow.png)
-
+  
 ## Manual API Testing with Postman
 
 You can manually test the APIs using the provided Postman collection.
@@ -93,10 +95,41 @@ After running the tests, you can generate Cucumber reports. These reports will b
 
 To view the reports, open the `index.html` file in a web browser.
 
+## Interpreting the Results
+
+### Test Output
+
+After running the tests, Maven will display the test results in the terminal. Look for lines indicating the number of tests run, passed, failed, and skipped.
+
+Example:
+
+[INFO] Results:
+
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+
+
+
+### Detailed Report
+
+Maven generates a detailed test report in the `target/surefire-reports` directory. Open the `index.html` file in a web browser to view the detailed test results, including:
+
+- Test cases executed
+- Pass/fail status
+- Error messages and stack traces for any failed tests
+
+### JUnit Assertions
+
+Pay attention to the assertions in the test methods. If an assertion fails, it indicates that the expected condition was not met, and the test will fail. Review the assertion messages to understand the cause of the failure.
+
+### Error Handling
+
+If any exceptions are thrown during the test execution, they will be logged in the test report. Review the stack traces to identify and fix the issues in the code.
+
+By following these steps, you can execute the tests and interpret the results to ensure your application is functioning as expected.
+
 ## Additional Information
 
 - Ensure you have configured the base URL and other necessary configurations in the `config.properties` file.
 - Use the provided Postman collection for manual testing and verification of API endpoints.
 - Check the generated Cucumber reports for detailed test execution results and statistics.
 
-For more information and troubleshooting, refer to the project documentation and resources.

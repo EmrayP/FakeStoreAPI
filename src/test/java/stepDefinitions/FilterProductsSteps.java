@@ -35,7 +35,7 @@ import static utilities.constants.Messages.*;
 public class FilterProductsSteps {
     private Response response;
     private List<pages.Product> filteredProducts;
-    private static final String RESULTS_FILE = FrameworkConstants.RESULT_JSON_FILE;
+
 
     @Given("the application is configured to connect to base url")
     public void the_application_is_configured_to_connect_to_base_url() {
@@ -86,13 +86,14 @@ public class FilterProductsSteps {
 
     @Then("it should write the filtered products to Json-file")
     public void it_should_write_the_filtered_products_to_json_file() {
-        JsonUtils.writeToJsonFile(filteredProducts, RESULTS_FILE);
+        JsonUtils.writeToJsonFile(filteredProducts, FrameworkConstants.RESULT_JSON_FILE);
+
     }
 
     @Then("the results.json file should contain the filtered and formatted products")
     public void the_results_json_file_should_contain_the_filtered_and_formatted_products() {
         try {
-            JsonUtils.verifyJsonFileContent(RESULTS_FILE, FrameworkConstants.RATE_THRESHOLD, FrameworkConstants.COUNT_THRESHOLD);
+            JsonUtils.verifyJsonFileContent(FrameworkConstants.RESULT_JSON_FILE, FrameworkConstants.RATE_THRESHOLD, FrameworkConstants.COUNT_THRESHOLD);
         } catch (IOException e) {
             throw new JsonVerificationException(RUN_TIME_EXCEPTION, e);
         }
