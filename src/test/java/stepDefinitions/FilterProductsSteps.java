@@ -53,7 +53,7 @@ public class FilterProductsSteps {
         }
     }
 
-    @Given("the application requests all products from the API")
+    @Given("^the application requests all products from the API$")
     public void the_application_requests_all_products_from_the_API() {
         response = RestAssured.get();
     }
